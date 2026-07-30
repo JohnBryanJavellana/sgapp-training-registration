@@ -128,7 +128,7 @@ export async function POST(request: Request) {
                         </head>
                         <body>
                         <div class="container">
-                            <img src="/assets/738774557_10164735419234244_596011779044760202_n2.png" alt="SGAPP Registration Banner" class="banner" />
+                            <img src="https://sgapp-training-registration.vercel.app/assets/738774557_10164735419234244_596011779044760202_n2.png" alt="SGAPP Registration Banner" class="banner" />
 
                             <div class="content">
                                 <div class="accent-heading">REGISTRATION ALERT</div>

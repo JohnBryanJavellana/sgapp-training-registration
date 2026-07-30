@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId,
-            range: 'Sheet1!A:J',
+            range: 'Sheet1!A:K',
         });
 
         const rows = response.data.values;
@@ -52,12 +52,14 @@ export async function GET(request: Request) {
             const mname = row[1] ?? '';
             const lname = row[2] ?? '';
             const email = row[3] ?? '';
-            const job_title = row[4] ?? '';
-            const agency = row[5] ?? '';
-            const selectedRequestType = row[6] ?? '';
-            const contact = row[7] ?? '';
-            const registeredAtStr = row[8] ?? '';
-            const notificationStatus = row[9] ?? '';
+            const sex = row[4] ?? '';
+            const age = row[5] ?? '';
+            const work = row[6] ?? '';
+            const address = row[7] ?? '';
+            const contact = row[8] ?? '';
+            const selectedRequestType = row[9] ?? '';
+            const registeredAtStr = row[10] ?? '';
+            const notificationStatus = row[11] ?? '';
 
             if (!registeredAtStr || notificationStatus === 'YES') continue;
 
@@ -71,7 +73,7 @@ export async function GET(request: Request) {
             }
 
             await transporter.sendMail({
-                from: `"Mikrotik Registration" <${process.env.EMAIL_USER}>`,
+                from: `"SGAPP Registration" <${process.env.EMAIL_USER}>`,
                 to: email?.toString(),
                 subject: 'Registration Confirmed!',
                 html: `
@@ -98,14 +100,14 @@ export async function GET(request: Request) {
                         </head>
                         <body>
                         <div class="container">
-                            <img src="https://mikrotik-registration-omega.vercel.app/assets/738774557_10164735419234244_596011779044760202_n.jpg" alt="Mikrotik Registration Banner" class="banner" />
+                            <img src="https://sgapp-training-registration.vercel.app//assets/738774557_10164735419234244_596011779044760202_n2.png" alt="SGAPP Registration Banner" class="banner" />
 
                             <div class="content">
                                 <div class="accent-heading">CONGRATULATIONS!</div>
-                                <h1>You are now officially registered for the Mikrotik Event.</h1>
+                                <h1>You are now officially registered for the SGAPP Event.</h1>
 
-                                <p>Your registration has been successfully confirmed, and your proof of payment has been verified. We are excited to have you join us for this meaningful event bringing together professionals, tech enthusiasts, and partners.</p>
-                                <p>Get ready for an unforgettable experience filled with deep-dive technical sessions, professional networking, and collaborative learning.</p>
+                                <p>Your registration has been successfully confirmed and your details have been logged. We are thrilled to welcome you to this year's event bringing together dedicated professionals, industry leaders, and valued partners.</p>
+                                <p>Get ready for an engaging experience filled with insightful presentations, strategic discussions, and valuable professional networking opportunities.</p>
 
                                 <div class="details-box">
                                     <div class="details-title">Your Registration Summary</div>
@@ -115,23 +117,27 @@ export async function GET(request: Request) {
                                             <td class="value">${[fname, mname, lname].filter(Boolean).join(' ')}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">Email:</td>
-                                            <td class="value">${email}</td>
-                                        </tr>
-                                        <tr class="table-row">
                                             <td class="label">Phone:</td>
                                             <td class="value">${contact}</td>
                                         </tr>
                                         <tr class="table-row">
                                             <td class="label">Job Title:</td>
-                                            <td class="value">${job_title}</td>
+                                            <td class="value">${sex}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">Agency:</td>
-                                            <td class="value">${agency}</td>
+                                            <td class="label">age:</td>
+                                            <td class="value">${age}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">Category:</td>
+                                            <td class="label">work:</td>
+                                            <td class="value">${work}</td>
+                                        </tr>
+                                        <tr class="table-row">
+                                            <td class="label">address:</td>
+                                            <td class="value">${address}</td>
+                                        </tr>
+                                        <tr class="table-row">
+                                            <td class="label">Payment option:</td>
                                             <td class="value">${selectedRequestType}</td>
                                         </tr>
                                     </table>
