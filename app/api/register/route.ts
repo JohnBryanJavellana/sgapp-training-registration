@@ -9,8 +9,10 @@ export async function POST(request: Request) {
         const mname = formData.get('mname');
         const lname = formData.get('lname');
         const email = formData.get('email');
-        const job_title = formData.get('job_title');
-        const agency = formData.get('agency');
+        const sex = formData.get('sex');
+        const age = formData.get('age');
+        const work = formData.get('work');
+        const address = formData.get('address');
         const contact = formData.get('contact');
         const selectedRequestType = formData.get('selectedRequestType');
         const paymentFile = formData.get('paymentFile');
@@ -56,7 +58,7 @@ export async function POST(request: Request) {
 
         await sheets.spreadsheets.values.append({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Sheet1!A:J',
+            range: 'Sheet1!A:K',
             valueInputOption: 'USER_ENTERED',
             requestBody: {
                 values: [[
@@ -64,10 +66,12 @@ export async function POST(request: Request) {
                     mname,
                     lname,
                     email,
-                    job_title,
-                    agency,
-                    selectedRequestType,
+                    sex,
+                    age,
+                    work,
+                    address,
                     contact,
+                    selectedRequestType,
                     new Date().toISOString(),
                     "NO"
                 ]],
@@ -83,7 +87,7 @@ export async function POST(request: Request) {
         });
 
         await transporter.sendMail({
-            from: `"Mikrotik Registration" <${process.env.EMAIL_USER}>`,
+            from: `"SGAPP Training Registration" <${process.env.EMAIL_USER}>`,
             to: process.env.NOTIFICATION_EMAIL,
             subject: 'New Registration Created!',
             html: `
@@ -111,11 +115,11 @@ export async function POST(request: Request) {
                         </head>
                         <body>
                         <div class="container">
-                            <img src="https://mikrotik-registration-omega.vercel.app/assets/738774557_10164735419234244_596011779044760202_n.jpg" alt="Mikrotik Registration Banner" class="banner" />
+                            <img src="/assets/738774557_10164735419234244_596011779044760202_n2.png" alt="SGAPP Registration Banner" class="banner" />
 
                             <div class="content">
                                 <div class="accent-heading">REGISTRATION ALERT</div>
-                                <h1>A new attendee has registered for the Mikrotik Event.</h1>
+                                <h1>A new attendee has registered for the SGAPP Event.</h1>
                                 <p>The system has logged a new entry. Review the registration details below. The uploaded proof of payment has been attached directly to this notification message.</p>
 
                                 <div class="details-box">
@@ -135,14 +139,22 @@ export async function POST(request: Request) {
                                         </tr>
                                         <tr class="table-row">
                                             <td class="label">Job Title:</td>
-                                            <td class="value">${job_title}</td>
+                                            <td class="value">${sex}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">Agency:</td>
-                                            <td class="value">${agency}</td>
+                                            <td class="label">age:</td>
+                                            <td class="value">${age}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">Category:</td>
+                                            <td class="label">work:</td>
+                                            <td class="value">${work}</td>
+                                        </tr>
+                                        <tr class="table-row">
+                                            <td class="label">address:</td>
+                                            <td class="value">${address}</td>
+                                        </tr>
+                                        <tr class="table-row">
+                                            <td class="label">Payment option:</td>
                                             <td class="value">${selectedRequestType}</td>
                                         </tr>
                                     </table>
@@ -168,6 +180,6 @@ export async function POST(request: Request) {
 
     } catch (error) {
         console.log('Registration Error:', error);
-        return NextResponse.json({ error: `Something went wrong.` }, { status: 500 });
+        return NextResponse.json({ error: `Something went wrong. ${error}` }, { status: 500 });
     }
 }

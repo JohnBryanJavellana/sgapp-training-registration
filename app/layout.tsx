@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-    title: "Mikrotik Training Registration",
-    description: "Mikrotik Training Registration",
+    title: "SGAPP Training Registration",
+    description: "SGAPP Training Registration",
     icons: {
         icon: '/assets/mikrotik.ico'
     },

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Card, CardContent, Checkbox, CircularProgress, FormControl, OutlinedInput, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Checkbox, CircularProgress, FormControl, MenuItem, OutlinedInput, Select, Typography } from "@mui/material";
 import { SubmitEvent, useRef, useState } from "react";
 import GuestCardHeader from "./component/GuestCardHeader";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -11,33 +11,33 @@ interface FormInputs {
     mname: string,
     lname: string,
     email: string,
-    job_title: string,
-    agency: string,
+    age: string,
+    sex: string,
+    work: string,
+    address: string,
     contact: string,
     paymentFile: File | null,
     captcha: ReCAPTCHA | null
 }
 
-export const RegistrationCategory = {
-    REGULAR_RATE: {
+export const PaymentOptions = {
+    GCASH: {
         id: 1,
-        name: 'Regular Rate',
-        amount: '₱25,000.00 (VAT-EX)',
+        name: 'GCash',
+        amount: '09658444982',
+        imgUrl: '/assets/gcash.jpg'
     },
-    RESERVATION: {
+    GOTYME: {
         id: 2,
-        name: 'Reservation',
-        amount: '₱5,000.00 (VAT-EX)',
+        name: 'GoTyme',
+        amount: '018864853860',
+        imgUrl: '/assets/gotyme.jpg'
     },
-    EARLY_BIRD_RATE: {
+    MAYA: {
         id: 3,
-        name: 'Early Bird Rate',
-        amount: '₱24,000.00 (VAT-EX) If paid on or before July 20, 2026.',
-    },
-    SPECIAL_RATE: {
-        id: 4,
-        name: 'Special Rate',
-        amount: 'For 1st 5 paying participants.',
+        name: 'Maya',
+        amount: '09658444982',
+        imgUrl: '/assets/maya.jpg'
     }
 };
 
@@ -48,8 +48,10 @@ export default function Login() {
         mname: "",
         lname: "",
         email: "",
-        job_title: "",
-        agency: "",
+        sex: "",
+        age: "",
+        work: "",
+        address: "",
         contact: "",
         paymentFile: null,
         captcha: null
@@ -60,6 +62,7 @@ export default function Login() {
     const isButtonDisabled =
         Object.entries(formData).filter(([key]) => key !== 'mname').some(([_, value]) => value === '') ||
         !formData.captcha ||
+        !formData.paymentFile ||
         !selectedRequestType ||
         isSubmitting;
 
@@ -73,10 +76,12 @@ export default function Login() {
         data.append('mname', formData.mname);
         data.append('lname', formData.lname);
         data.append('email', formData.email);
-        data.append('job_title', formData.job_title);
-        data.append('agency', formData.agency);
+        data.append('sex', formData.sex);
+        data.append('age', formData.age);
+        data.append('work', formData.work);
+        data.append('address', formData.address);
         data.append('contact', formData.contact);
-        data.append('selectedRequestType', `${selectedRequestType?.name} - ${selectedRequestType?.amount}`);
+        data.append('selectedRequestType', selectedRequestType?.name);
         data.append('paymentFile', formData?.paymentFile);
 
         try {
@@ -106,13 +111,13 @@ export default function Login() {
                 <CardContent sx={{ p: 5 }} component="form" onSubmit={handleSubmit}>
                     <Box>
                         <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                            PALO, LEYTE "5-Day MIKROTIK TRAINING BOOTCAMP ( August 10-14, 2026 8:00 AM to 5:00 PM ) @ FREQIT SOLUTIONS - LIMITED SLOTS ONLY "
+                            FREQIT Solutions and Resonate Institute Inc. are committed to protecting your personal data in accordance with Republic Act No. 10173, otherwise known as the Data Privacy Act of 2012.
                         </Typography>
                     </Box>
 
                     <Box sx={{ mt: 1, mb: 2 }}>
                         <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                            Official Mikrotik Certified Network Associate ( MTCNA )+ Mikrotik Certified Routing Engineer ( MTCRE )+ Mikrotik Certified User Management Engineer ( MTCUME ) Course with International Certification Exam.
+                            The personal information collected through this form will be solely used for the purposes of SGAPP.
                         </Typography>
                     </Box>
 
@@ -134,7 +139,7 @@ export default function Login() {
 
                     <FormControl fullWidth size="small" margin="dense">
                         <OutlinedInput
-                            id="email"
+                            id="fname"
                             type="text"
                             value={formData.fname}
                             onChange={(e) => setFormData({
@@ -144,11 +149,11 @@ export default function Login() {
                         />
                     </FormControl>
 
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Middle Initial</Typography>
+                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Middle name</Typography>
 
                     <FormControl fullWidth size="small" margin="dense">
                         <OutlinedInput
-                            id="email"
+                            id="mname"
                             type="text"
                             value={formData.mname}
                             onChange={(e) => setFormData({
@@ -162,7 +167,7 @@ export default function Login() {
 
                     <FormControl fullWidth size="small" margin="dense">
                         <OutlinedInput
-                            id="email"
+                            id="emlnameail"
                             type="text"
                             value={formData.lname}
                             onChange={(e) => setFormData({
@@ -172,39 +177,11 @@ export default function Login() {
                         />
                     </FormControl>
 
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Job Title / Role <span style={{ color: 'red' }}>*</span></Typography>
-
-                    <FormControl fullWidth size="small" margin="dense">
-                        <OutlinedInput
-                            id="email"
-                            type="text"
-                            value={formData.job_title}
-                            onChange={(e) => setFormData({
-                                ...formData,
-                                job_title: e.target.value
-                            })}
-                        />
-                    </FormControl>
-
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Agency / Company <span style={{ color: 'red' }}>*</span></Typography>
-
-                    <FormControl fullWidth size="small" margin="dense">
-                        <OutlinedInput
-                            id="email"
-                            type="text"
-                            value={formData.agency}
-                            onChange={(e) => setFormData({
-                                ...formData,
-                                agency: e.target.value
-                            })}
-                        />
-                    </FormControl>
-
                     <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Contact number <span style={{ color: 'red' }}>*</span></Typography>
 
                     <FormControl fullWidth size="small" margin="dense">
                         <OutlinedInput
-                            id="email"
+                            id="contact"
                             type="number"
                             value={formData.contact}
                             onChange={(e) => setFormData({
@@ -214,27 +191,89 @@ export default function Login() {
                         />
                     </FormControl>
 
+                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Address <span style={{ color: 'red' }}>*</span></Typography>
+
+                    <FormControl fullWidth size="small" margin="dense">
+                        <OutlinedInput
+                            id="address"
+                            type="text"
+                            value={formData.address}
+                            onChange={(e) => setFormData({
+                                ...formData,
+                                address: e.target.value
+                            })}
+                        />
+                    </FormControl>
+
+                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Age <span style={{ color: 'red' }}>*</span></Typography>
+
+                    <FormControl fullWidth size="small" margin="dense">
+                        <OutlinedInput
+                            id="age"
+                            type="number"
+                            value={formData.age}
+                            onChange={(e) => setFormData({
+                                ...formData,
+                                age: e.target.value
+                            })}
+                        />
+                    </FormControl>
+
+                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Sex <span style={{ color: 'red' }}>*</span></Typography>
+
+                    <FormControl fullWidth size="small" margin="dense">
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formData.sex}
+                            onChange={(e) => setFormData({
+                                ...formData,
+                                sex: e.target.value
+                            })}
+                        >
+                            <MenuItem value="MALE">MALE</MenuItem>
+                            <MenuItem value="FEMALE">FEMALE</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 1 }}>Work/Institutional Affiliation <span style={{ color: 'red' }}>*</span></Typography>
+
+                    <FormControl fullWidth size="small" margin="dense">
+                        <OutlinedInput
+                            id="work"
+                            type="text"
+                            value={formData.work}
+                            onChange={(e) => setFormData({
+                                ...formData,
+                                work: e.target.value
+                            })}
+                        />
+                    </FormControl>
+
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', my: 2 }}>
-                        <img src={'/assets/738774557_10164735419234244_596011779044760202_n.jpg'} style={{
+                        <img src={'/assets/738774557_10164735419234244_596011779044760202_n2.png'} style={{
                             height: '100%',
                             width: '100%'
                         }} />
                     </Box>
 
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 2 }}>Registration Category <span style={{ color: 'red' }}>*</span></Typography>
-                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>Inclusive of training meals, shirts and other freebies.</Typography>
+                        <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 2 }}>Choose payment option <span style={{ color: 'red' }}>*</span></Typography>
+                        <Box sx={{ lineHeight: '1' }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>For proof of payment, don't forget to upload 1 PDF or image (max 100MB) showing a clear transaction number, date, and timestamp.</Typography>
+                        </Box>
                     </Box>
 
                     {
-                        Object.values(RegistrationCategory).map((requestType, index) => {
+                        Object.values(PaymentOptions).map((requestType, index) => {
+                            const isSelected = requestType?.id === selectedRequestType?.id;
                             return <Card onClick={() => { setSelectedRequestType(requestType); }} key={index} elevation={0} sx={{
                                 cursor: 'pointer',
-                                border: requestType?.id === selectedRequestType?.id ? '1px dashed' : '1px solid',
-                                borderColor: requestType?.id === selectedRequestType?.id ? 'rgba(37, 35, 35, 0.23)' : 'rgba(12, 10, 10, 0.02)',
-                                backgroundColor: requestType?.id === selectedRequestType?.id ? 'rgba(31, 66, 133, 0.05)' : 'transparent',
+                                border: isSelected ? '1px dashed' : '1px solid',
+                                borderColor: isSelected ? 'rgba(37, 35, 35, 0.23)' : 'rgba(12, 10, 10, 0.02)',
+                                backgroundColor: isSelected ? 'rgba(31, 66, 133, 0.05)' : 'transparent',
                                 '&:hover': {
-                                    borderColor: requestType?.id !== selectedRequestType?.id ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 87, 34, 0.05)',
+                                    borderColor: isSelected ? 'rgba(255, 87, 34, 0.05)' : 'rgba(0, 0, 0, 0.1)',
                                     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.05)'
                                 }
                             }}>
@@ -245,7 +284,7 @@ export default function Login() {
                                         </Typography>
 
                                         {
-                                            requestType?.id === selectedRequestType?.id &&
+                                            isSelected &&
                                             <Checkbox
                                                 size="small"
                                                 sx={{
@@ -257,7 +296,7 @@ export default function Login() {
                                                         color: 'rgb(31, 66, 133)'
                                                     }
                                                 }}
-                                                checked={requestType?.id === selectedRequestType?.id}
+                                                checked={isSelected}
                                                 readOnly
                                                 onChange={() => setSelectedRequestType(requestType)}
                                             />
@@ -267,23 +306,24 @@ export default function Login() {
                                     <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                                         {requestType.amount}
                                     </Typography>
+
+                                    {
+                                        isSelected &&
+                                        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', my: 2, px: 0 }}>
+                                            <img src={requestType.imgUrl} style={{
+                                                height: '100%',
+                                                width: '100%',
+                                                borderRadius: 4
+                                            }} />
+                                        </Box>
+                                    }
                                 </CardContent>
                             </Card>
                         })
                     }
 
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary', my: 1, mt: 2 }}>Payment option</Typography>
-
-                    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', my: 2, px: 0 }}>
-                        <img src={'/assets/gcash-payment.png'} style={{
-                            height: '100%',
-                            width: '100%',
-                            borderRadius: 4
-                        }} />
-                    </Box>
 
                     <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 2 }}>Proof of payment <span style={{ color: 'red' }}>*</span></Typography>
-                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>Upload 1 PDF or image (max 100MB) showing a clear transaction number, date, and timestamp.</Typography>
 
                     <FormControl fullWidth size="small" margin="dense">
                         <OutlinedInput
