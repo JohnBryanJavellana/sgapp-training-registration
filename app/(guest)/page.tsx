@@ -81,6 +81,7 @@ export default function Login() {
         data.append('work', formData.work);
         data.append('address', formData.address);
         data.append('contact', formData.contact);
+        data.append('captcha', String(formData.captcha));
         data.append('selectedRequestType', selectedRequestType?.name);
         data.append('paymentFile', formData?.paymentFile);
 
