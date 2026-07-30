@@ -15,7 +15,8 @@ export async function POST(request: Request) {
         const address = formData.get('address');
         const contact = formData.get('contact');
         const captcha = formData.get('captcha');
-        const selectedRequestType = formData.get('selectedRequestType');
+        const payment_option = formData.get('payment_option');
+        const category = formData.get('category');
         const paymentFile = formData.get('paymentFile');
 
         if (!paymentFile) {
@@ -71,7 +72,7 @@ export async function POST(request: Request) {
 
         await sheets.spreadsheets.values.append({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Sheet1!A:K',
+            range: 'Sheet1!A:L',
             valueInputOption: 'USER_ENTERED',
             requestBody: {
                 values: [[
@@ -84,7 +85,8 @@ export async function POST(request: Request) {
                     work,
                     address,
                     contact,
-                    selectedRequestType,
+                    category,
+                    payment_option,
                     new Date().toISOString(),
                     "NO"
                 ]],
@@ -151,24 +153,28 @@ export async function POST(request: Request) {
                                             <td class="value">${contact}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">Job Title:</td>
+                                            <td class="label">Sex:</td>
                                             <td class="value">${sex}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">age:</td>
+                                            <td class="label">Age:</td>
                                             <td class="value">${age}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">work:</td>
+                                            <td class="label">Work:</td>
                                             <td class="value">${work}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">address:</td>
+                                            <td class="label">Address:</td>
                                             <td class="value">${address}</td>
                                         </tr>
                                         <tr class="table-row">
+                                            <td class="label">Category:</td>
+                                            <td class="value">${category}</td>
+                                        </tr>
+                                        <tr class="table-row">
                                             <td class="label">Payment option:</td>
-                                            <td class="value">${selectedRequestType}</td>
+                                            <td class="value">${payment_option}</td>
                                         </tr>
                                     </table>
                                 </div>

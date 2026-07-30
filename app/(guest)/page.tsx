@@ -20,6 +20,24 @@ interface FormInputs {
     captcha: ReCAPTCHA | null
 }
 
+export const RegistrationCategory = {
+    REGULAR_RATE: {
+        id: 1,
+        name: 'Regular Rate',
+        amount: '₱6,990.00 (VAT-EX)',
+    },
+    RESERVATION: {
+        id: 2,
+        name: 'Reservation',
+        amount: '₱2,000.00 (VAT-EX)',
+    },
+    EARLY_BIRD_RATE: {
+        id: 3,
+        name: 'Early Bird Rate',
+        amount: '₱6,000.00 (VAT-EX) until August 8, 2026.',
+    }
+};
+
 export const PaymentOptions = {
     GCASH: {
         id: 1,
@@ -42,6 +60,7 @@ export const PaymentOptions = {
 };
 
 export default function Login() {
+    const [selectedPaymentOption, setSelectedPaymentOption] = useState<any | null>(null);
     const [selectedRequestType, setSelectedRequestType] = useState<any | null>(null);
     const [formData, setFormData] = useState<FormInputs>({
         fname: "",
@@ -63,6 +82,7 @@ export default function Login() {
         Object.entries(formData).filter(([key]) => key !== 'mname').some(([_, value]) => value === '') ||
         !formData.captcha ||
         !formData.paymentFile ||
+        !selectedPaymentOption ||
         !selectedRequestType ||
         isSubmitting;
 
@@ -82,7 +102,8 @@ export default function Login() {
         data.append('address', formData.address);
         data.append('contact', formData.contact);
         data.append('captcha', String(formData.captcha));
-        data.append('selectedRequestType', selectedRequestType?.name);
+        data.append('category', `${selectedRequestType?.name} - ${selectedRequestType?.amount}`);
+        data.append('payment_option', selectedPaymentOption?.name);
         data.append('paymentFile', formData?.paymentFile);
 
         try {
@@ -259,6 +280,57 @@ export default function Login() {
                     </Box>
 
                     <Box sx={{ mb: 2 }}>
+                        <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 2 }}>Registration Category <span style={{ color: 'red' }}>*</span></Typography>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>Inclusive of training meals, shirts and other freebies.</Typography>
+                    </Box>
+
+                    {
+                        Object.values(RegistrationCategory).map((requestType, index) => {
+                            return <Card onClick={() => { setSelectedRequestType(requestType); }} key={index} elevation={0} sx={{
+                                cursor: 'pointer',
+                                border: requestType?.id === selectedRequestType?.id ? '1px dashed' : '1px solid',
+                                borderColor: requestType?.id === selectedRequestType?.id ? 'rgba(37, 35, 35, 0.23)' : 'rgba(12, 10, 10, 0.02)',
+                                backgroundColor: requestType?.id === selectedRequestType?.id ? 'rgba(31, 66, 133, 0.05)' : 'transparent',
+                                '&:hover': {
+                                    borderColor: requestType?.id !== selectedRequestType?.id ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 87, 34, 0.05)',
+                                    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.05)'
+                                }
+                            }}>
+                                <CardContent sx={{ py: 1, '&:last-child': { pb: 1 } }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pb: 0 }}>
+                                        <Typography variant="subtitle2" sx={{ fontWeight: '500', maxWidth: '80%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {requestType.name}
+                                        </Typography>
+
+                                        {
+                                            requestType?.id === selectedRequestType?.id &&
+                                            <Checkbox
+                                                size="small"
+                                                sx={{
+                                                    position: 'relative',
+                                                    p: 0,
+                                                    m: 0,
+                                                    color: 'rgb(31, 66, 133)',
+                                                    '&.Mui-checked': {
+                                                        color: 'rgb(31, 66, 133)'
+                                                    }
+                                                }}
+                                                checked={requestType?.id === selectedRequestType?.id}
+                                                readOnly
+                                                onChange={() => setSelectedRequestType(requestType)}
+                                            />
+                                        }
+                                    </Box>
+
+                                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                                        {requestType.amount}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        })
+                    }
+
+                    <Box sx={{ mb: 2 }}>
                         <Typography variant="subtitle2" sx={{ color: 'text.secondary', mt: 2 }}>Choose payment option <span style={{ color: 'red' }}>*</span></Typography>
                         <Box sx={{ lineHeight: '1' }}>
                             <Typography variant="caption" sx={{ color: 'text.secondary' }}>For proof of payment, don't forget to upload 1 PDF or image (max 100MB) showing a clear transaction number, date, and timestamp.</Typography>
@@ -267,8 +339,8 @@ export default function Login() {
 
                     {
                         Object.values(PaymentOptions).map((requestType, index) => {
-                            const isSelected = requestType?.id === selectedRequestType?.id;
-                            return <Card onClick={() => { setSelectedRequestType(requestType); }} key={index} elevation={0} sx={{
+                            const isSelected = requestType?.id === selectedPaymentOption?.id;
+                            return <Card onClick={() => { setSelectedPaymentOption(requestType); }} key={index} elevation={0} sx={{
                                 cursor: 'pointer',
                                 border: isSelected ? '1px dashed' : '1px solid',
                                 borderColor: isSelected ? 'rgba(37, 35, 35, 0.23)' : 'rgba(12, 10, 10, 0.02)',
@@ -299,7 +371,7 @@ export default function Login() {
                                                 }}
                                                 checked={isSelected}
                                                 readOnly
-                                                onChange={() => setSelectedRequestType(requestType)}
+                                                onChange={() => setSelectedPaymentOption(requestType)}
                                             />
                                         }
                                     </Box>

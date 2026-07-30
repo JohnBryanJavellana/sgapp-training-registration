@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import nodemailer from 'nodemailer';
 
-// 3
 export async function GET(request: Request) {
     try {
         const authHeader = request.headers.get('authorization');
@@ -57,9 +56,10 @@ export async function GET(request: Request) {
             const work = row[6] ?? '';
             const address = row[7] ?? '';
             const contact = row[8] ?? '';
-            const selectedRequestType = row[9] ?? '';
-            const registeredAtStr = row[10] ?? '';
-            const notificationStatus = row[11] ?? '';
+            const category = row[9] ?? '';
+            const payment_option = row[10] ?? '';
+            const registeredAtStr = row[11] ?? '';
+            const notificationStatus = row[12] ?? '';
 
             if (!registeredAtStr || notificationStatus === 'YES') continue;
 
@@ -121,24 +121,28 @@ export async function GET(request: Request) {
                                             <td class="value">${contact}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">Job Title:</td>
+                                            <td class="label">Sex:</td>
                                             <td class="value">${sex}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">age:</td>
+                                            <td class="label">Age:</td>
                                             <td class="value">${age}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">work:</td>
+                                            <td class="label">Work:</td>
                                             <td class="value">${work}</td>
                                         </tr>
                                         <tr class="table-row">
-                                            <td class="label">address:</td>
+                                            <td class="label">Address:</td>
                                             <td class="value">${address}</td>
                                         </tr>
                                         <tr class="table-row">
+                                            <td class="label">Category:</td>
+                                            <td class="value">${category}</td>
+                                        </tr>
+                                        <tr class="table-row">
                                             <td class="label">Payment option:</td>
-                                            <td class="value">${selectedRequestType}</td>
+                                            <td class="value">${payment_option}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -151,7 +155,7 @@ export async function GET(request: Request) {
 
             await sheets.spreadsheets.values.update({
                 spreadsheetId,
-                range: `Sheet1!J${i + 1}`,
+                range: `Sheet1!M${i + 1}`,
                 valueInputOption: 'USER_ENTERED',
                 requestBody: {
                     values: [["YES"]],
