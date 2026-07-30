@@ -66,9 +66,9 @@ export async function GET(request: Request) {
             const registrationTime = new Date(registeredAtStr);
             const currentTime = new Date();
             const timeDifferenceInMs = currentTime.getTime() - registrationTime.getTime();
-            const twoHoursInMs = 2 * 60 * 60 * 1000;
+            const oneHoursInMs = 1 * 60 * 60 * 1000;
 
-            if (timeDifferenceInMs < twoHoursInMs) {
+            if (timeDifferenceInMs < oneHoursInMs) {
                 continue;
             }
 
