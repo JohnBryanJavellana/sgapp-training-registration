@@ -24,12 +24,12 @@ export const RegistrationCategory = {
     REGULAR_RATE: {
         id: 1,
         name: 'Regular Rate',
-        amount: '₱6,990.00 (VAT-EX)',
+        amount: '₱2,499.00 (VAT-EX)',
     },
     RESERVATION: {
         id: 2,
         name: 'Reservation',
-        amount: '₱2,000.00 (VAT-EX)',
+        amount: '₱1,000.00 (VAT-EX)',
     },
     EARLY_BIRD_RATE: {
         id: 3,
