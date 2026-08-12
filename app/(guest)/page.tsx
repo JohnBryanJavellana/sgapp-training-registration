@@ -30,11 +30,6 @@ export const RegistrationCategory = {
         id: 2,
         name: 'Reservation',
         amount: '₱1,000.00 (VAT-EX)',
-    },
-    EARLY_BIRD_RATE: {
-        id: 3,
-        name: 'Early Bird Rate',
-        amount: '₱6,000.00 (VAT-EX) until August 8, 2026.',
     }
 };
 
@@ -273,7 +268,7 @@ export default function Login() {
                     </FormControl>
 
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', my: 2 }}>
-                        <img src={'/assets/738774557_10164735419234244_596011779044760202_n2.jpg'} style={{
+                        <img src={'/assets/738774557_10164735419234244_596011779044760202_n.jpg'} style={{
                             height: '100%',
                             width: '100%'
                         }} />
