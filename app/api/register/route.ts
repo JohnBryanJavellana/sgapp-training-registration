@@ -102,7 +102,11 @@ export async function POST(request: Request) {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
+            proxy: process.env.PROXY_URL,
             pool: false,
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 10000
         } as nodemailer.TransportOptions);
 
         await transporter.sendMail({

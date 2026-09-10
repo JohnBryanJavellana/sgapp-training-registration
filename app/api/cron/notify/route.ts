@@ -175,6 +175,3 @@ export async function GET(request: Request) {
         console.error('Cron Error:', error);
     }
 }
-
-// client_id = 335699611395-92dsp6fogu5suvi7ksk5cc0gmgul4vfn.apps.googleusercontent.com
-// client_secret = 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
