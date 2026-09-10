@@ -75,7 +75,6 @@ export default function Login() {
 
     const isButtonDisabled =
         Object.entries(formData).filter(([key]) => key !== 'mname').some(([_, value]) => value === '') ||
-        !formData.captcha ||
         !formData.paymentFile ||
         !selectedPaymentOption ||
         !selectedRequestType ||
@@ -96,7 +95,6 @@ export default function Login() {
         data.append('work', formData.work);
         data.append('address', formData.address);
         data.append('contact', formData.contact);
-        data.append('captcha', String(formData.captcha));
         data.append('category', `${selectedRequestType?.name} - ${selectedRequestType?.amount}`);
         data.append('payment_option', selectedPaymentOption?.name);
         data.append('paymentFile', formData?.paymentFile);
@@ -407,13 +405,6 @@ export default function Login() {
                             }}
                         />
                     </FormControl>
-
-                    <Box sx={{ mt: 2 }}>
-                        <CustomRecaptcha callbackFunction={(e) => setFormData({
-                            ...formData,
-                            captcha: e
-                        })} />
-                    </Box>
 
                     <Button type="submit" color="primary" disabled={isButtonDisabled} variant="contained" sx={{ mt: 3, cursor: isButtonDisabled ? 'not-allowed' : 'default' }} fullWidth>
                         {
