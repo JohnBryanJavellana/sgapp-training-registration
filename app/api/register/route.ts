@@ -94,114 +94,114 @@ export async function POST(request: Request) {
             },
         });
 
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-            proxy: process.env.PROXY_URL,
-            pool: false,
-            connectionTimeout: 10000,
-            greetingTimeout: 10000,
-            socketTimeout: 10000
-        } as nodemailer.TransportOptions);
+        // const transporter = nodemailer.createTransport({
+        //     host: 'smtp.gmail.com',
+        //     port: 465,
+        //     secure: true,
+        //     auth: {
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASS,
+        //     },
+        //     proxy: process.env.PROXY_URL,
+        //     pool: false,
+        //     connectionTimeout: 10000,
+        //     greetingTimeout: 10000,
+        //     socketTimeout: 10000
+        // } as nodemailer.TransportOptions);
 
-        await transporter.sendMail({
-            from: `"SGAPP Training Registration" <${process.env.EMAIL_USER}>`,
-            to: process.env.NOTIFICATION_EMAIL,
-            subject: 'New Registration Created!',
-            html: `
-                    <!DOCTYPE html>
-                    <html>
-                        <head>
-                        <meta charset="utf-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>New Registration Notification</title>
-                        <style>
-                            body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; margin: 0; padding: 20px; -webkit-font-smoothing: antialiased; }
-                            .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
-                            .banner { width: 100%; max-width: 600px; height: auto; display: block; border: 0; }
-                            .content { padding: 32px; }
-                            .accent-heading { font-size: 22px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 12px 0; }
-                            h1 { font-size: 20px; font-weight: 700; color: #111827; margin: 0 0 16px 0; line-height: 1.4; }
-                            p { font-size: 15px; color: #4b5563; line-height: 1.6; margin: 0 0 20px 0; }
-                            .details-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 24px; }
-                            .details-title { font-size: 14px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
-                            .table-row td { padding: 6px 0; font-size: 14px; line-height: 1.5; vertical-align: top; }
-                            .label { font-weight: 600; color: #6b7280; width: 120px; }
-                            .value { color: #111827; font-weight: 500; }
-                            .footer { border-top: 1px solid #e5e7eb; padding-top: 16px; font-size: 13px; color: #1e40af; background: #eff6ff; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; }
-                        </style>
-                        </head>
-                        <body>
-                        <div class="container">
-                            <img src="https://sgapp-training-registration.vercel.app/assets/738774557_10164735419234244_596011779044760202_n2.png" alt="SGAPP Registration Banner" class="banner" />
+        // await transporter.sendMail({
+        //     from: `"SGAPP Training Registration" <${process.env.EMAIL_USER}>`,
+        //     to: process.env.NOTIFICATION_EMAIL,
+        //     subject: 'New Registration Created!',
+        //     html: `
+        //             <!DOCTYPE html>
+        //             <html>
+        //                 <head>
+        //                 <meta charset="utf-8">
+        //                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        //                 <title>New Registration Notification</title>
+        //                 <style>
+        //                     body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f3f4f6; color: #1f2937; margin: 0; padding: 20px; -webkit-font-smoothing: antialiased; }
+        //                     .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; }
+        //                     .banner { width: 100%; max-width: 600px; height: auto; display: block; border: 0; }
+        //                     .content { padding: 32px; }
+        //                     .accent-heading { font-size: 22px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 12px 0; }
+        //                     h1 { font-size: 20px; font-weight: 700; color: #111827; margin: 0 0 16px 0; line-height: 1.4; }
+        //                     p { font-size: 15px; color: #4b5563; line-height: 1.6; margin: 0 0 20px 0; }
+        //                     .details-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 24px; }
+        //                     .details-title { font-size: 14px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
+        //                     .table-row td { padding: 6px 0; font-size: 14px; line-height: 1.5; vertical-align: top; }
+        //                     .label { font-weight: 600; color: #6b7280; width: 120px; }
+        //                     .value { color: #111827; font-weight: 500; }
+        //                     .footer { border-top: 1px solid #e5e7eb; padding-top: 16px; font-size: 13px; color: #1e40af; background: #eff6ff; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; }
+        //                 </style>
+        //                 </head>
+        //                 <body>
+        //                 <div class="container">
+        //                     <img src="https://sgapp-training-registration.vercel.app/assets/738774557_10164735419234244_596011779044760202_n2.png" alt="SGAPP Registration Banner" class="banner" />
 
-                            <div class="content">
-                                <div class="accent-heading">REGISTRATION ALERT</div>
-                                <h1>A new attendee has registered for the SGAPP Event.</h1>
-                                <p>The system has logged a new entry. Review the registration details below. The uploaded proof of payment has been attached directly to this notification message.</p>
+        //                     <div class="content">
+        //                         <div class="accent-heading">REGISTRATION ALERT</div>
+        //                         <h1>A new attendee has registered for the SGAPP Event.</h1>
+        //                         <p>The system has logged a new entry. Review the registration details below. The uploaded proof of payment has been attached directly to this notification message.</p>
 
-                                <div class="details-box">
-                                    <div class="details-title">Attendee Information Summary</div>
-                                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                        <tr class="table-row">
-                                            <td class="label">Name:</td>
-                                            <td class="value">${[fname, mname, lname].filter(Boolean).join(' ')}</td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Email:</td>
-                                            <td class="value"><a href="mailto:${email}" style="color: #2563eb; text-decoration: none;">${email}</a></td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Phone:</td>
-                                            <td class="value">${contact}</td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Sex:</td>
-                                            <td class="value">${sex}</td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Age:</td>
-                                            <td class="value">${age}</td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Work:</td>
-                                            <td class="value">${work}</td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Address:</td>
-                                            <td class="value">${address}</td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Category:</td>
-                                            <td class="value">${category}</td>
-                                        </tr>
-                                        <tr class="table-row">
-                                            <td class="label">Payment option:</td>
-                                            <td class="value">${payment_option}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                
-                                <div class="footer">
-                                    📎 The attendee's proof of payment is attached below.
-                                </div>
-                            </div>
-                        </div>
-                        </body>
-                    </html>
-                `,
-            attachments: [
-                {
-                    filename: file.name || 'proof_of_payment.png',
-                    content: buffer,
-                }
-            ]
-        });
+        //                         <div class="details-box">
+        //                             <div class="details-title">Attendee Information Summary</div>
+        //                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Name:</td>
+        //                                     <td class="value">${[fname, mname, lname].filter(Boolean).join(' ')}</td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Email:</td>
+        //                                     <td class="value"><a href="mailto:${email}" style="color: #2563eb; text-decoration: none;">${email}</a></td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Phone:</td>
+        //                                     <td class="value">${contact}</td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Sex:</td>
+        //                                     <td class="value">${sex}</td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Age:</td>
+        //                                     <td class="value">${age}</td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Work:</td>
+        //                                     <td class="value">${work}</td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Address:</td>
+        //                                     <td class="value">${address}</td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Category:</td>
+        //                                     <td class="value">${category}</td>
+        //                                 </tr>
+        //                                 <tr class="table-row">
+        //                                     <td class="label">Payment option:</td>
+        //                                     <td class="value">${payment_option}</td>
+        //                                 </tr>
+        //                             </table>
+        //                         </div>
+
+        //                         <div class="footer">
+        //                             📎 The attendee's proof of payment is attached below.
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //                 </body>
+        //             </html>
+        //         `,
+        //     attachments: [
+        //         {
+        //             filename: file.name || 'proof_of_payment.png',
+        //             content: buffer,
+        //         }
+        //     ]
+        // });
 
         return NextResponse.json({ message: 'Success' }, { status: 200 });
 
