@@ -45,7 +45,11 @@ export async function GET(request: Request) {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
+            proxy: process.env.PROXY_URL,
             pool: false,
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 10000
         } as nodemailer.TransportOptions);
 
         for (let i = 1; i < rows.length; i++) {
@@ -171,3 +175,6 @@ export async function GET(request: Request) {
         console.error('Cron Error:', error);
     }
 }
+
+// client_id = 335699611395-92dsp6fogu5suvi7ksk5cc0gmgul4vfn.apps.googleusercontent.com
+// client_secret = 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
