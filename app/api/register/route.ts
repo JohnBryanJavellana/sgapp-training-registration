@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export async function POST(request: Request) {
     try {
@@ -14,12 +15,25 @@ export async function POST(request: Request) {
         const work = formData.get('work');
         const address = formData.get('address');
         const contact = formData.get('contact');
+        const captcha = formData.get('captcha');
         const payment_option = formData.get('payment_option');
         const category = formData.get('category');
         const paymentFile = formData.get('paymentFile');
 
         if (!paymentFile) {
             return NextResponse.json({ error: 'File is required' }, { status: 400 });
+        }
+
+        const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.NEXT_PUBLIC_RECAPTCHA_SECRETKEY}&response=${captcha}`;
+
+        const captchaRes = await fetch(verifyUrl, { method: 'POST' });
+        const captchaData = await captchaRes.json();
+
+        if (!captchaData.success) {
+            return NextResponse.json(
+                { error: 'reCAPTCHA verification failed. Please try again.' },
+                { status: 400 }
+            );
         }
 
         const auth = new google.auth.GoogleAuth({
@@ -81,12 +95,15 @@ export async function POST(request: Request) {
         });
 
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
-        });
+            pool: false,
+        } as nodemailer.TransportOptions);
 
         await transporter.sendMail({
             from: `"SGAPP Training Registration" <${process.env.EMAIL_USER}>`,
